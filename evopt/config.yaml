@@ -10,11 +10,8 @@ arch:
   - amd64
 startup: application
 boot: auto
+init: false
 image: andig/evopt:latest
-options: 
-  config_file: /config/evopt.yaml
-schema:
-  config_file: str
 ports:
   7050/tcp: 7050
 ports_description:
@@ -25,4 +22,4 @@ map:
   - type: homeassistant_config
     read_only: false
 ingress: false
-host_network: false
+host_network: true
