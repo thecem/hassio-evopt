@@ -1,0 +1,23 @@
+name: evopt
+version: "1.0.0"
+slug: evopt
+description: "Startet evopt als Home Assistant Add-on"
+url: "https://github.com/andig/evopt"
+arch:
+  - amd64
+  - aarch64
+  - armv7
+  - armhf
+  - i386
+startup: application
+boot: auto
+init: false
+ingress: false
+ports:
+  7050/tcp: 7050
+ports_description:
+  7050/tcp: "evopt API Port"
+map: []
+options: {}
+schema: {}
+image: "ghcr.io/andig/evopt"
