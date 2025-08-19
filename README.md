@@ -89,4 +89,3 @@ Informationen zur Lizenz des Addons sind im Repository zu finden.
 ---
 
 *Dieses Addon ist eine Ergänzung zur evcc-Projektlösung für intelligente Elektrofahrzeugladeoptimierung in Home Assistant.*
-```
