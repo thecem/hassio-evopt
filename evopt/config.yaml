@@ -10,8 +10,10 @@ arch:
   - amd64
 startup: application
 boot: auto
+legacy: true
+stage: experimental
 init: false
-image: andig/evopt:latest
+image: andig/evopt
 ports:
   7050/tcp: 7050
 ports_description:
