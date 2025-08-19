@@ -1,0 +1,15 @@
+{
+  "name": "evopt",
+  "version": "1.0.0",
+  "slug": "evopt",
+  "description": "evopt als Home Assistant Add-on",
+  "startup": "application",
+  "boot": "auto",
+  "init": false,
+  "image": "andig/evopt:latest",
+  "ports": {
+    "7050/tcp": 7050
+  },
+  "arch": ["amd64", "armv7", "aarch64"],
+  "ingress": false
+}
