@@ -5,13 +5,13 @@ slug: evopt
 description: Optimierer für Ladevorgänge (evopt) als Home Assistant Add-on
 url: https://github.com/andig/evopt
 arch: 
-  - arm64
+  - amd64
 startup: application
 boot: auto
 legacy: true
 stage: experimental
 init: false
-image: andig/evopt
+image: litithio/evopt
 ports:
   7050/tcp: 7050
 ports_description:
