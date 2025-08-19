@@ -1,21 +1,11 @@
-# EV Opt
-
-## Latest Update
-The latest nightly version of EVCC now directly integrates with EV Opt. This provides enhanced functionality and seamless operation for users.
-
-More details can be found in the [EVCC documentation](https://github.com/evcc-io/evcc) and the [EV Opt project](https://github.com/thecem/hassio-evopt).
-
 ## Installation Instructions
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/thecem/hassio-evopt.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd hassio-evopt
-   ```
-3. Follow the setup instructions specific to your platform (e.g., Docker, Hass.io).
-4. Refer to the [EVCC documentation](https://github.com/evcc-io/evcc) for integration details and further configuration.
+To set up the EV Opt addon for Home Assistant, follow these steps:
 
-Feel free to reach out if you encounter any issues or need further assistance.
+1. Open Home Assistant and navigate to **Einstellungen > Add-ons > Add-on-Store**.
+2. Klicke auf die drei Punkte oben rechts und wähle **Repository hinzufügen**.
+3. Add the repository URL: `https://github.com/thecem/hassio-evopt`
+4. Nach dem Hinzufügen sollte das EV Opt Addon im Add-on-Store erscheinen. Wähle es aus und klicke auf **Installieren**.
+5. Gehe zum Reiter **Konfiguration** des Addons und trage die benötigten Einstellungen ein. Details findest du in der [EV Opt Dokumentation](https://github.com/thecem/hassio-evopt).
+6. Starte das Addon, indem du auf **Start** klickst. Stelle sicher, dass alles korrekt läuft.
+7. Für die Integration mit EVCC folge der [EVCC Dokumentation](https://github.com/evcc-io/evcc).
