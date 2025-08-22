@@ -1,12 +1,12 @@
 name: Update Docker Tag
 
 permissions:
-  contents: write
+  contents: write  # Erlaubnis für Commit und Push
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs every hourly UTC
-  workflow_dispatch: # Allows manual triggering of the workflow
+    - cron: '0 * * * *' # stündlich um Minute 0 (UTC)
+  workflow_dispatch: # manueller Trigger möglich
 
 jobs:
   update-docker-tag:
@@ -19,18 +19,18 @@ jobs:
     - name: Get latest Docker tag
       id: get_tag
       run: |
-        curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '.results[].name' | head -n 1 > latest_tag.txt
-        tag=$(cat latest_tag.txt)
+        tag=$(curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '.results[0].name')
         echo "Latest Docker tag: $tag"
-        echo "::set-output name=tag::$tag"
+        echo "tag=$tag" >> $GITHUB_OUTPUT
 
     - name: Update config.yaml
       run: |
-        tag=$(cat latest_tag.txt)
-        sed -i "s/version:.*/version: \"$tag\"/" evopt/config.yaml
+        sed -i "s/^version:.*/version: \"$TAG\"/" evopt/config.yaml
+      env:
+        TAG: ${{ steps.get_tag.outputs.tag }}
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: "Update Docker tag to ${{ steps.get_tag.outputs.tag }}"
+        commit_message: Update Docker tag to ${{ steps.get_tag.outputs.tag }}
         branch: main
