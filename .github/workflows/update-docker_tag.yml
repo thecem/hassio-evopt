@@ -16,16 +16,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Get latest Docker tag from Docker Hub
+      - name: Get latest semantic version Docker tag from Docker Hub
         id: get_tag
         run: |
           tag=$(curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '
             .results
+            | map(select(.name | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")))
             | sort_by(.tag_last_pushed)
             | last
             | .name
           ')
-          echo "Found latest tag: $tag"
+          echo "Found latest semantic version tag: $tag"
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Get current version from config.yaml
@@ -39,7 +40,6 @@ jobs:
         id: compare_and_update
         run: |
           echo "Comparing current version (${{ steps.current_version.outputs.current_version }}) with new tag (${{ steps.get_tag.outputs.tag }})"
-          # Sort versions and get the highest
           version_highest=$(printf "%s\n%s\n" "${{ steps.current_version.outputs.current_version }}" "${{ steps.get_tag.outputs.tag }}" | sort -V | tail -n1)
           
           if [ "$version_highest" = "${{ steps.get_tag.outputs.tag }}" ] && [ "$version_highest" != "${{ steps.current_version.outputs.current_version }}" ]; then
