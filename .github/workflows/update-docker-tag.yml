@@ -1,5 +1,8 @@
 name: Update Docker Tag
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '0 * * * *' # Runs every hourly UTC
