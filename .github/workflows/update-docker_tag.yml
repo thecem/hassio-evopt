@@ -1,0 +1,41 @@
+name: Update Docker Tag
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # stündlich, Minute 0 (UTC)
+  workflow_dispatch:
+
+jobs:
+  update-docker-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Get latest Docker tag from Docker Hub
+      id: get_tag
+      run: |
+        tag=$(curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '
+          .results
+          | sort_by(.tag_last_pushed)
+          | last
+          | .name
+        ')
+        echo "Found latest tag: $tag"
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+
+    - name: Update config.yaml with latest tag
+      run: |
+        sed -i "s/^version:.*/version: \"$TAG\"/" evopt/config.yaml
+      env:
+        TAG: ${{ steps.get_tag.outputs.tag }}
+
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Update Docker tag to ${{ steps.get_tag.outputs.tag }}
+        branch: main
