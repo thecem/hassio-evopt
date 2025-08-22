@@ -13,29 +13,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Get latest Docker tag from Docker Hub
-      id: get_tag
-      run: |
-        tag=$(curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '
-          .results
-          | sort_by(.tag_last_pushed)
-          | last
-          | .name
-        ')
-        echo "Found latest tag: $tag"
-        echo "tag=$tag" >> $GITHUB_OUTPUT
+      - name: Get latest Docker tag from Docker Hub
+        id: get_tag
+        run: |
+          tag=$(curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '
+            .results
+            | sort_by(.tag_last_pushed)
+            | last
+            | .name
+          ')
+          echo "Found latest tag: $tag"
+          echo "tag=$tag" >> $GITHUB_OUTPUT
 
-    - name: Update config.yaml with latest tag
-      run: |
-        sed -i "s/^version:.*/version: \"$TAG\"/" evopt/config.yaml
-      env:
-        TAG: ${{ steps.get_tag.outputs.tag }}
+      - name: Get current version from config.yaml
+        id: current_version
+        run: |
+          current_version=$(grep -oP '^version:\s*"\K[^"]+' evopt/config.yaml)
+          echo "Current version: $current_version"
+          echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
-    - name: Commit and push changes
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Update Docker tag to ${{ steps.get_tag.outputs.tag }}
-        branch: main
+      - name: Compare versions and update config.yaml if newer
+        id: compare_and_update
+        run: |
+          echo "Comparing current version (${{ steps.current_version.outputs.current_version }}) with new tag (${{ steps.get_tag.outputs.tag }})"
+          # Sort versions and get the highest
+          version_highest=$(printf "%s\n%s\n" "${{ steps.current_version.outputs.current_version }}" "${{ steps.get_tag.outputs.tag }}" | sort -V | tail -n1)
+          
+          if [ "$version_highest" = "${{ steps.get_tag.outputs.tag }}" ] && [ "$version_highest" != "${{ steps.current_version.outputs.current_version }}" ]; then
+            echo "New version is greater, updating config.yaml"
+            sed -i "s/^version:.*/version: \"${{ steps.get_tag.outputs.tag }}\"/" evopt/config.yaml
+            echo "updated=true" >> $GITHUB_OUTPUT
+          else
+            echo "No update needed"
+            echo "updated=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes if updated
+        if: steps.compare_and_update.outputs.updated == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Docker tag to ${{ steps.get_tag.outputs.tag }}
+          branch: main
