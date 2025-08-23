@@ -25,5 +25,4 @@ map:
   - type: homeassistant_config
     read_only: false
 ingress: false
-webui: http://[HOST]:[PORT:7050]
 host_network: true
