@@ -14,8 +14,7 @@ stage: experimental
 init: false
 watchdog: http://[HOST]:[PORT:7050]/optimize/health
 image: litithio/evopt
-schema:
-  basePath: str?
+show_in_sidebar: false
 ports:
   7050/tcp: 7050
 ports_description:
@@ -25,7 +24,6 @@ map:
     read_only: false
   - type: homeassistant_config
     read_only: false
-ingress: true
-ingress_port: 7050
+ingress: false
 webui: http://[HOST]:[PORT:7050]
 host_network: true
