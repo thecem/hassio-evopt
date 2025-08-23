@@ -6,6 +6,7 @@ description: Optimierer für Ladevorgänge (evopt) als Home Assistant Add-on
 url: https://github.com/andig/evopt
 arch: 
   - amd64
+  - aarch64 
 startup: application
 boot: auto
 legacy: true
