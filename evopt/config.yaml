@@ -12,6 +12,7 @@ boot: auto
 legacy: true
 stage: experimental
 init: false
+watchdog: http://[HOST]:[PORT:7050]/optimize/health
 image: litithio/evopt
 ports:
   7050/tcp: 7050
@@ -23,4 +24,5 @@ map:
   - type: homeassistant_config
     read_only: false
 ingress: true
+webui: http://[HOST]:[PORT:7050]/
 host_network: true
