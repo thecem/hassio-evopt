@@ -14,6 +14,8 @@ stage: experimental
 init: false
 watchdog: http://[HOST]:[PORT:7050]/optimize/health
 image: litithio/evopt
+shema:
+  basePath: str?
 ports:
   7050/tcp: 7050
 ports_description:
