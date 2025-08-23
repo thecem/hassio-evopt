@@ -27,5 +27,5 @@ map:
     read_only: false
 ingress: true
 ingress_port: 7050
-webui: http://[HOST]:[PORT:7050]/
+webui: http://[HOST]:[PORT:7050]
 host_network: true
