@@ -1,6 +1,6 @@
 ---
 name: evopt
-version: "0.1.11"
+version: "0.1.12"
 slug: evopt
 description: Optimierer für Ladevorgänge (evopt) als Home Assistant Add-on
 url: https://github.com/andig/evopt
