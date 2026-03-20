@@ -19,7 +19,7 @@ jobs:
       - name: Get latest semantic version Docker tag from Docker Hub
         id: get_tag
         run: |
-          tag=$(curl -s https://hub.docker.com/v2/repositories/litithio/evopt/tags | jq -r '
+          tag=$(curl -s "https://hub.docker.com/v2/repositories/litithio/evopt/tags?page_size=100" | jq -r '
             .results
             | map(select(.name | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")))
             | sort_by(.tag_last_pushed)
