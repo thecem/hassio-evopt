@@ -1,0 +1,26 @@
+name: Keepalive
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Monatlich am 1. des Monats um 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Update keepalive timestamp
+        run: date -u > .github/keepalive
+
+      - name: Commit keepalive timestamp
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: 'chore: keepalive'
+          file_pattern: '.github/keepalive'
